@@ -16,6 +16,7 @@ const StudentsPage = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [debounceSearch, setDebounceSearch] = useState('');
+    const [classFilter, setClassFilter] = useState('all');
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -28,7 +29,7 @@ const StudentsPage = () => {
     const fetchStudents = async () => {
         setLoading(true);
         try {
-            const res = await api.get(`/students?page=${page}&limit=10&search=${debounceSearch}`);
+            const res = await api.get(`/students?page=${page}&limit=10&search=${debounceSearch}&classFilter=${classFilter}`);
             setStudents(res.data.students);
             setTotalPages(res.data.totalPages);
         } catch (err) {
@@ -40,7 +41,7 @@ const StudentsPage = () => {
 
     useEffect(() => {
         fetchStudents();
-    }, [page, debounceSearch]);
+    }, [page, debounceSearch, classFilter]);
 
     const handleAddOrEdit = async (data) => {
         try {
@@ -95,6 +96,19 @@ const StudentsPage = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full bg-white border-none rounded-full py-3 pl-12 pr-4 shadow-sm text-sm focus:ring-2 focus:ring-[var(--primary-light)] outline-none font-medium"
                         />
+                    </div>
+                    <div className="relative w-full sm:w-44">
+                        <select 
+                            value={classFilter}
+                            onChange={(e) => { setClassFilter(e.target.value); setPage(1); }}
+                            className="w-full bg-white border-none rounded-full py-3 px-6 shadow-sm text-sm focus:ring-2 focus:ring-[var(--primary-light)] outline-none font-medium appearance-none cursor-pointer"
+                        >
+                            <option value="all">All Classes</option>
+                            <option value="9">Class 9</option>
+                            <option value="10">Class 10</option>
+                            <option value="11">Class 11</option>
+                            <option value="12">Class 12</option>
+                        </select>
                     </div>
                     <motion.button
                         initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}

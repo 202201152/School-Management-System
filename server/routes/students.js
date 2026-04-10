@@ -14,12 +14,17 @@ router.get('/', async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const search = req.query.search || '';
 
+        const classFilter = req.query.classFilter || 'all';
+
         const query = {};
         if (search) {
             query.$or = [
                 { name: { $regex: search, $options: 'i' } },
                 { rollNumber: { $regex: search, $options: 'i' } }
             ];
+        }
+        if (classFilter !== 'all') {
+            query.class = classFilter;
         }
 
         const total = await Student.countDocuments(query);
