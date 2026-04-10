@@ -1,18 +1,28 @@
 import Navbar from './Navbar';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const Layout = ({ children }) => {
     return (
-        <div className="flex h-screen bg-slate-950 overflow-hidden">
-            <Navbar />
-            <div className="flex-1 overflow-auto relative">
-                {/* Background decorative elements */}
-                <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-br from-indigo-900/20 via-purple-900/10 to-transparent pointer-events-none" />
-                <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] rounded-full bg-indigo-600/5 blur-[120px] pointer-events-none" />
+        <div className="min-h-screen bg-[var(--bg-page)] p-4 sm:p-6 md:p-8 lg:p-12 flex justify-center custom-scrollbar">
+            {/* The outer floating white app container */}
+            <div className="w-full max-w-[1600px] bg-[var(--bg-card)] rounded-[2.5rem] shadow-2xl shadow-indigo-500/10 flex p-4 gap-4 overflow-hidden relative border border-white">
                 
-                <main className="p-8 relative z-10 w-full max-w-7xl mx-auto">
-                    {children}
-                </main>
+                {/* Narrow pill sidebar */}
+                <Navbar />
+                
+                {/* Main Content Area */}
+                <div className="flex-1 bg-[#f5f3ff] rounded-3xl overflow-hidden relative flex flex-col shadow-inner border border-violet-100/50">
+                    <main className="flex-1 overflow-y-auto px-6 py-8 md:px-10 lg:px-12 w-full custom-scrollbar relative z-10">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            {children}
+                        </motion.div>
+                    </main>
+                </div>
+
             </div>
         </div>
     );

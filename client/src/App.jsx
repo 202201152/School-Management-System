@@ -13,7 +13,17 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Toaster position="top-right" />
+        <Toaster 
+            position="top-center" 
+            toastOptions={{
+                success: {
+                    style: { background: 'var(--primary)', color: '#fff', borderRadius: '1rem', fontWeight: 'bold' }
+                },
+                error: {
+                    style: { background: 'var(--danger)', color: '#fff', borderRadius: '1rem', fontWeight: 'bold' }
+                }
+            }}
+        />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

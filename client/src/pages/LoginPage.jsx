@@ -3,7 +3,6 @@ import { AuthContext } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { LogIn } from 'lucide-react';
 
 const LoginPage = () => {
     const { login } = useContext(AuthContext);
@@ -19,76 +18,65 @@ const LoginPage = () => {
 
         try {
             await login(email, password);
-            toast.success('Login successful!', {
-                style: { background: '#1e293b', color: '#fff' }
-            });
+            toast.success('Login successful!');
             navigate('/dashboard');
         } catch (err) {
-            toast.error(err.response?.data?.message || 'Login failed', {
-                style: { background: '#1e293b', color: '#fff' }
-            });
+            toast.error(err.response?.data?.message || 'Login failed');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
-            {/* Ambient Background Lights */}
-            <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-600/20 blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-purple-600/20 blur-[120px] pointer-events-none" />
-
+        <div className="min-h-screen bg-[var(--bg-page)] flex items-center justify-center p-4 relative overflow-hidden">
             <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, type: "spring" }}
-                className="w-full max-w-md bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 relative z-10 shadow-2xl"
+                transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+                className="w-full max-w-md bg-white rounded-[2rem] p-10 relative z-10 shadow-2xl shadow-indigo-500/10"
             >
-                <div className="text-center mb-8">
+                <div className="text-center mb-10">
                     <motion.div 
                         initial={{ scale: 0 }} 
                         animate={{ scale: 1 }} 
                         transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                        className="w-16 h-16 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-500/30"
+                        className="w-20 h-20 bg-[var(--primary)] rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-purple-500/30"
                     >
-                        <LogIn className="text-white" size={32} />
+                        <span className="text-white font-black text-4xl tracking-tighter">S</span>
                     </motion.div>
-                    <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-                    <p className="text-slate-400">Sign in to manage the school system</p>
+                    <h1 className="text-3xl font-black text-[var(--text-dark)] mb-2">School Admin</h1>
+                    <p className="text-[var(--text-muted)] font-medium">Sign in to manage the system</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1 ml-1">Email</label>
                         <input
                             required
                             type="email"
                             name="email"
-                            className="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all placeholder-slate-500"
-                            placeholder="admin@school.com"
+                            className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-[var(--text-dark)] focus:outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100 transition-all font-medium placeholder-gray-400"
+                            placeholder="Email address"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-1 ml-1">Password</label>
                         <input
                             required
                             type="password"
                             name="password"
-                            className="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all placeholder-slate-500"
-                            placeholder="••••••••"
+                            className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-[var(--text-dark)] focus:outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100 transition-all font-medium placeholder-gray-400"
+                            placeholder="Password"
                         />
                     </div>
                     
                     <button
                         disabled={loading}
                         type="submit"
-                        className="w-full py-3.5 rounded-xl bg-indigo-600 text-white font-medium mt-4 hover:bg-indigo-500 hover:scale-[1.02] transform transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        className="w-full py-4 rounded-2xl bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-bold mt-2 shadow-lg shadow-purple-500/20 active:scale-95 transition-all outline-none"
                     >
-                        {loading ? 'Authenticating...' : 'Sign In'}
+                        <motion.div whileHover={ loading ? {} : { scale: 1.05 } } transition={{ duration: 0.1 }}>
+                            {loading ? 'Authenticating...' : 'Sign In'}
+                        </motion.div>
                     </button>
-                    <p className="text-center text-slate-500 text-sm mt-4">
-                        (You can seed an admin or test via API first)
-                    </p>
                 </form>
             </motion.div>
         </div>
