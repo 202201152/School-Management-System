@@ -10,8 +10,30 @@ router.use(authMiddleware);
 // Get all students
 router.get('/', async (req, res) => {
     try {
-        const students = await Student.find().sort({ createdAt: -1 });
-        res.json(students);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || '';
+
+        const query = {};
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { rollNumber: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const total = await Student.countDocuments(query);
+        const students = await Student.find(query)
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.json({
+            students,
+            total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page
+        });
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }

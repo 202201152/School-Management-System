@@ -6,6 +6,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/students');
 const taskRoutes = require('./routes/tasks');
+const announcementRoutes = require('./routes/announcements');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/announcements', announcementRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI).then(() => {

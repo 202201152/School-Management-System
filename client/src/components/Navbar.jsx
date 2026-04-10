@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../AuthContext';
-import { LayoutDashboard, Users, CheckSquare, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, CheckSquare, LogOut, Megaphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Navbar = () => {
@@ -17,6 +17,7 @@ const Navbar = () => {
         { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
         { name: 'Students', path: '/students', icon: <Users size={20} /> },
         { name: 'Tasks', path: '/tasks', icon: <CheckSquare size={20} /> },
+        { name: 'Announcements', path: '/announcements', icon: <Megaphone size={20} /> },
     ];
 
     return (

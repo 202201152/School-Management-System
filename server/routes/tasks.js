@@ -9,8 +9,32 @@ router.use(authMiddleware);
 // Get all tasks
 router.get('/', async (req, res) => {
     try {
-        const tasks = await Task.find().populate('assignedTo', 'name class rollNumber').sort({ createdAt: -1 });
-        res.json(tasks);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || '';
+        const status = req.query.status || ''; // 'pending' or 'completed'
+
+        const query = {};
+        if (search) {
+            query.title = { $regex: search, $options: 'i' };
+        }
+        if (status && status !== 'all') {
+            query.status = status;
+        }
+
+        const total = await Task.countDocuments(query);
+        const tasks = await Task.find(query)
+            .populate('assignedTo', 'name class rollNumber')
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.json({
+            tasks,
+            total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page
+        });
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
