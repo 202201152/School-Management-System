@@ -8,23 +8,22 @@ import { motion } from 'framer-motion';
 import { AuthContext } from '../AuthContext';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const data = [
-  { name: 'Jan', tasks: 400 },
-  { name: 'Feb', tasks: 300 },
-  { name: 'Mar', tasks: 500 },
-  { name: 'Apr', tasks: 800 },
-  { name: 'May', tasks: 600 },
-  { name: 'Jun', tasks: 900 },
-];
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const Dashboard = () => {
     const { user } = useContext(AuthContext);
+    const [chartFilter, setChartFilter] = useState('Monthly');
     const [stats, setStats] = useState({
         totalStudents: 0,
         totalTasks: 0,
         pendingTasks: 0,
         completedTasks: 0
     });
+    
+    // Extracted dynamic chart data state
+    const [dynamicMonthlyData, setDynamicMonthlyData] = useState([]);
+    const [dynamicWeeklyData, setDynamicWeeklyData] = useState([]);
+    
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -47,6 +46,44 @@ const Dashboard = () => {
                     pendingTasks: totalTasks - completed,
                     completedTasks: completed
                 });
+                
+                // Aggregate Chart Data
+                // 1. Monthly (Last 6 Months including current)
+                const now = new Date();
+                const mData = [];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                    const label = MONTH_NAMES[d.getMonth()];
+                    
+                    // count tasks in this month
+                    const count = tasks.filter(t => {
+                        const tDate = new Date(t.createdAt);
+                        return tDate.getMonth() === d.getMonth() && tDate.getFullYear() === d.getFullYear();
+                    }).length;
+                    
+                    mData.push({ name: label, tasks: count });
+                }
+                setDynamicMonthlyData(mData);
+                
+                // 2. Weekly (Weeks of the Current Month)
+                const wData = [
+                    { name: 'Week 1', tasks: 0 },
+                    { name: 'Week 2', tasks: 0 },
+                    { name: 'Week 3', tasks: 0 },
+                    { name: 'Week 4', tasks: 0 }
+                ];
+                tasks.forEach(t => {
+                    const tDate = new Date(t.createdAt);
+                    if (tDate.getMonth() === now.getMonth() && tDate.getFullYear() === now.getFullYear()) {
+                        const dayOfMonth = tDate.getDate();
+                        if (dayOfMonth <= 7) wData[0].tasks++;
+                        else if (dayOfMonth <= 14) wData[1].tasks++;
+                        else if (dayOfMonth <= 21) wData[2].tasks++;
+                        else wData[3].tasks++;
+                    }
+                });
+                setDynamicWeeklyData(wData);
+
             } catch (err) {
                 toast.error('Failed to load dashboard data');
             } finally {
@@ -59,6 +96,7 @@ const Dashboard = () => {
 
     // Create avatar initials
     const initials = user?.name ? user.name.slice(0, 2).toUpperCase() : 'AD';
+    const chartData = chartFilter === 'Monthly' ? dynamicMonthlyData : dynamicWeeklyData;
 
     if (loading) {
         return (
@@ -112,14 +150,18 @@ const Dashboard = () => {
                 >
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold text-[var(--text-dark)]">Task Overview</h2>
-                        <select className="bg-[var(--bg-page)] border-none text-sm font-medium rounded-full px-4 py-1.5 outline-none cursor-pointer text-[var(--text-dark)]">
-                            <option>Monthly</option>
-                            <option>Weekly</option>
+                        <select 
+                            value={chartFilter}
+                            onChange={(e) => setChartFilter(e.target.value)}
+                            className="bg-[var(--bg-page)] border-none text-sm font-medium rounded-full px-4 py-1.5 outline-none cursor-pointer text-[var(--text-dark)]"
+                        >
+                            <option value="Monthly">Monthly</option>
+                            <option value="Weekly">Weekly</option>
                         </select>
                     </div>
                     <div className="flex-1 min-h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorTasks" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.4}/>
