@@ -1,0 +1,228 @@
+commit 8966935d3015a93419aa693128ab59ee2b97fe6b
+Author: Ragan Patel <202201152@dau.ac.in>
+Date:   Sat Apr 11 10:50:34 2026 +0530
+
+    deplyment
+
+diff --git a/client/src/pages/AnnouncementsPage.jsx b/client/src/pages/AnnouncementsPage.jsx
+index 505cfff..686c6c9 100644
+--- a/client/src/pages/AnnouncementsPage.jsx
++++ b/client/src/pages/AnnouncementsPage.jsx
+@@ -1,4 +1,5 @@
+-import { useState, useEffect } from 'react';
++import { useState, useEffect, useContext } from 'react';
++import { AuthContext } from '../AuthContext';
+ import Layout from '../components/Layout';
+ import { Megaphone, Trash2, Send } from 'lucide-react';
+ import api from '../api';
+@@ -6,6 +7,7 @@ import toast from 'react-hot-toast';
+ import { motion, AnimatePresence } from 'framer-motion';
+ 
+ const AnnouncementsPage = () => {
++    const { user } = useContext(AuthContext);
+     const [announcements, setAnnouncements] = useState([]);
+     const [loading, setLoading] = useState(true);
+     const [isPosting, setIsPosting] = useState(false);
+diff --git a/client/src/pages/TasksPage.jsx b/client/src/pages/TasksPage.jsx
+index bcd9333..4fe8626 100644
+--- a/client/src/pages/TasksPage.jsx
++++ b/client/src/pages/TasksPage.jsx
+@@ -1,4 +1,5 @@
+-import { useState, useEffect } from 'react';
++import { useState, useEffect, useContext } from 'react';
++import { AuthContext } from '../AuthContext';
+ import Layout from '../components/Layout';
+ import TaskModal from '../components/TaskModal';
+ import { CheckSquare, Edit2, Trash2, CheckCircle2, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+@@ -7,6 +8,7 @@ import toast from 'react-hot-toast';
+ import { motion, AnimatePresence } from 'framer-motion';
+ 
+ const TasksPage = () => {
++    const { user } = useContext(AuthContext);
+     const [tasks, setTasks] = useState([]);
+     const [students, setStudents] = useState([]);
+     const [isModalOpen, setIsModalOpen] = useState(false);
+diff --git a/package-lock.json b/package-lock.json
+new file mode 100644
+index 0000000..9721179
+--- /dev/null
++++ b/package-lock.json
+@@ -0,0 +1,86 @@
++{
++  "name": "School-Management-System",
++  "lockfileVersion": 3,
++  "requires": true,
++  "packages": {
++    "": {
++      "dependencies": {
++        "motion": "^12.38.0"
++      }
++    },
++    "node_modules/framer-motion": {
++      "version": "12.38.0",
++      "resolved": "https://registry.npmjs.org/framer-motion/-/framer-motion-12.38.0.tgz",
++      "integrity": "sha512-rFYkY/pigbcswl1XQSb7q424kSTQ8q6eAC+YUsSKooHQYuLdzdHjrt6uxUC+PRAO++q5IS7+TamgIw1AphxR+g==",
++      "license": "MIT",
++      "dependencies": {
++        "motion-dom": "^12.38.0",
++        "motion-utils": "^12.36.0",
++        "tslib": "^2.4.0"
++      },
++      "peerDependencies": {
++        "@emotion/is-prop-valid": "*",
++        "react": "^18.0.0 || ^19.0.0",
++        "react-dom": "^18.0.0 || ^19.0.0"
++      },
++      "peerDependenciesMeta": {
++        "@emotion/is-prop-valid": {
++          "optional": true
++        },
++        "react": {
++          "optional": true
++        },
++        "react-dom": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/motion": {
++      "version": "12.38.0",
++      "resolved": "https://registry.npmjs.org/motion/-/motion-12.38.0.tgz",
++      "integrity": "sha512-uYfXzeHlgThchzwz5Te47dlv5JOUC7OB4rjJ/7XTUgtBZD8CchMN8qEJ4ZVsUmTyYA44zjV0fBwsiktRuFnn+w==",
++      "license": "MIT",
++      "dependencies": {
++        "framer-motion": "^12.38.0",
++        "tslib": "^2.4.0"
++      },
++      "peerDependencies": {
++        "@emotion/is-prop-valid": "*",
++        "react": "^18.0.0 || ^19.0.0",
++        "react-dom": "^18.0.0 || ^19.0.0"
++      },
++      "peerDependenciesMeta": {
++        "@emotion/is-prop-valid": {
++          "optional": true
++        },
++        "react": {
++          "optional": true
++        },
++        "react-dom": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/motion-dom": {
++      "version": "12.38.0",
++      "resolved": "https://registry.npmjs.org/motion-dom/-/motion-dom-12.38.0.tgz",
++      "integrity": "sha512-pdkHLD8QYRp8VfiNLb8xIBJis1byQ9gPT3Jnh2jqfFtAsWUA3dEepDlsWe/xMpO8McV+VdpKVcp+E+TGJEtOoA==",
++      "license": "MIT",
++      "dependencies": {
++        "motion-utils": "^12.36.0"
++      }
++    },
++    "node_modules/motion-utils": {
++      "version": "12.36.0",
++      "resolved": "https://registry.npmjs.org/motion-utils/-/motion-utils-12.36.0.tgz",
++      "integrity": "sha512-eHWisygbiwVvf6PZ1vhaHCLamvkSbPIeAYxWUuL3a2PD/TROgE7FvfHWTIH4vMl798QLfMw15nRqIaRDXTlYRg==",
++      "license": "MIT"
++    },
++    "node_modules/tslib": {
++      "version": "2.8.1",
++      "resolved": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
++      "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==",
++      "license": "0BSD"
++    }
++  }
++}
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000..0864df9
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,5 @@
++{
++  "dependencies": {
++    "motion": "^12.38.0"
++  }
++}
+diff --git a/server/seedUsers.js b/server/seedUsers.js
+new file mode 100644
+index 0000000..6d14a1b
+--- /dev/null
++++ b/server/seedUsers.js
+@@ -0,0 +1,75 @@
++const mongoose = require('mongoose');
++const bcrypt = require('bcrypt');
++const dotenv = require('dotenv');
++
++dotenv.config();
++
++const UserSchema = new mongoose.Schema({
++    name: { type: String, required: true },
++    email: { type: String, required: true, unique: true },
++    password: { type: String, required: true },
++    role: { type: String, enum: ['admin', 'student'], default: 'admin' },
++    studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' }
++});
++const User = mongoose.models.User || mongoose.model('User', UserSchema);
++
++const StudentSchema = new mongoose.Schema({
++    name: String,
++    class: String,
++    rollNumber: String,
++    email: String,
++    phone: String,
++    createdAt: { type: Date, default: Date.now }
++});
++const Student = mongoose.models.Student || mongoose.model('Student', StudentSchema);
++
++const seedUsers = async () => {
++    try {
++        await mongoose.connect(process.env.MONGO_URI);
++        console.log('Connected to MongoDB. Seeding User Logins...');
++
++        // Clear existing students to avoid dups from earlier tests
++        await User.deleteMany({ role: 'student' });
++        
++        // Ensure Admin exists
++        const adminExists = await User.findOne({ email: 'admin@school.com' });
++        if (!adminExists) {
++            const adminSalt = await bcrypt.genSalt(10);
++            const adminPass = await bcrypt.hash('admin123', adminSalt);
++            await new User({ name: 'System Admin', email: 'admin@school.com', password: adminPass, role: 'admin' }).save();
++        }
++
++        const students = await Student.find();
++        
++        const salt = await bcrypt.genSalt(10);
++        const defaultPassword = await bcrypt.hash('student123', salt);
++
++        let count = 0;
++        for (let student of students) {
++            const email = student.email || `student${student.rollNumber}@school.example.com`;
++            
++            const existing = await User.findOne({ email });
++            if (!existing) {
++                const user = new User({
++                    name: student.name,
++                    email: email,
++                    password: defaultPassword,
++                    role: 'student',
++                    studentId: student._id
++                });
++                await user.save();
++                count++;
++            }
++        }
++        
++        console.log(`Created ${count} student logins!`);
++        console.log('Password for all students is: student123');
++        process.exit();
++
++    } catch (error) {
++        console.error('Seeding Error:', error);
++        process.exit(1);
++    }
++};
++
++seedUsers();

@@ -1,0 +1,29 @@
+﻿commit fd48ff31a971b9b28d1c502c1517d8bad9a3f9d5
+Author: Ragan Patel <202201152@dau.ac.in>
+Date:   Fri Apr 10 15:51:10 2026 +0530
+
+    sorting functionality
+
+commit 81497f2a21f117d68ad4b936ab7000563e236220
+Author: Ragan Patel <202201152@dau.ac.in>
+Date:   Fri Apr 10 15:42:17 2026 +0530
+
+    graph update
+
+commit d29568ccba170ad1f4f9eba9135ea1b9da4462ad
+Author: Ragan Patel <202201152@dau.ac.in>
+Date:   Fri Apr 10 15:35:25 2026 +0530
+
+    UI changes
+
+commit 8e0b2fe9dfcf54a861920bec18e4ce595fc31193
+Author: Ragan Patel <202201152@dau.ac.in>
+Date:   Fri Apr 10 15:21:18 2026 +0530
+
+    announcement
+
+commit c45c462daa27c0cf60d153baa49dc7932bd66b31
+Author: Ragan Patel <202201152@dau.ac.in>
+Date:   Fri Apr 10 15:13:52 2026 +0530
+
+    Initialize MERN Full-stack School Management System
