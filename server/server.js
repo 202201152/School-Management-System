@@ -23,6 +23,11 @@ app.use('/api/students', studentRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/announcements', announcementRoutes);
 
+// Health check route
+app.get('/', (req, res) => {
+    res.send('School Management API is running...');
+});
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Connected to MongoDB');
