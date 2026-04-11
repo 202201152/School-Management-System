@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../AuthContext';
 import Layout from '../components/Layout';
 import { Megaphone, Trash2, Send } from 'lucide-react';
 import api from '../api';
@@ -6,6 +7,7 @@ import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const AnnouncementsPage = () => {
+    const { user } = useContext(AuthContext);
     const [announcements, setAnnouncements] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isPosting, setIsPosting] = useState(false);

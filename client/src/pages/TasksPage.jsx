@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../AuthContext';
 import Layout from '../components/Layout';
 import TaskModal from '../components/TaskModal';
 import { CheckSquare, Edit2, Trash2, CheckCircle2, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -7,6 +8,7 @@ import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const TasksPage = () => {
+    const { user } = useContext(AuthContext);
     const [tasks, setTasks] = useState([]);
     const [students, setStudents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
